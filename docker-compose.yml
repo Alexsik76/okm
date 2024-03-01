@@ -1,0 +1,23 @@
+version: "3"
+services:
+  cont1:
+    networks:
+      test:
+    build: .
+  cont2:
+    networks:
+      test:
+    build: .
+  web:
+    networks:
+      test:
+    image: nginx
+    volumes:
+    - ./html:/usr/share/nginx/html:ro
+    ports:
+    - "80:80"
+    
+
+networks:
+  test:
+    driver: bridge
