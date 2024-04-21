@@ -1,0 +1,24 @@
+services:
+  cont1:
+    tty: true
+    networks:
+      test:
+    build: .
+  cont2:
+    tty: true
+    networks:
+      test:
+    build: .
+  web:
+    networks:
+      test:
+    image: nginx
+    volumes:
+    - ./html:/usr/share/nginx/html:ro
+    ports:
+    - "80:80"
+    
+
+networks:
+  test:
+    driver: bridge
