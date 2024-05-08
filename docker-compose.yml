@@ -1,24 +1,49 @@
 services:
   cont1:
     tty: true
-    networks:
-      test:
     build: .
+    networks:
+      okm_ntw:
+        ipv4_address: 172.24.0.10
+    dns: 172.24.0.2
   cont2:
     tty: true
-    networks:
-      test:
     build: .
-  web:
     networks:
-      test:
+      okm_ntw:
+        ipv4_address: 172.24.0.11
+    dns: 172.24.0.2
+  web:
     image: nginx
     volumes:
     - ./html:/usr/share/nginx/html:ro
+    networks:
+      okm_ntw:
+        ipv4_address: 172.24.0.20
     ports:
     - "80:80"
-    
+  ns1:
+    image: ubuntu/bind9
+    environment:
+      - BIND9_USER=root
+      - TZ=UTC
+    networks:
+      okm_ntw:
+        ipv4_address: 172.24.0.2
+    ports:
+    - "53:53/tcp"
+    - "53:53/udp"
+    volumes:
+    - ./config:/etc/bind
+    - ./cache:/varcache/bind
+    - ./records:/var/lib/bind
+    restart: unless-stopped
 
 networks:
-  test:
+  okm_ntw:
     driver: bridge
+    ipam:
+      config:
+        - subnet: 172.24.0.0/16
+          gateway: 172.24.0.1
+        
