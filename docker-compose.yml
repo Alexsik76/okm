@@ -22,7 +22,7 @@ services:
         ipv4_address: 172.24.0.20
     ports:
     - "80:80"
-  ns1:
+  primary_dns:
     image: ubuntu/bind9
     environment:
       - BIND9_USER=root
@@ -36,8 +36,22 @@ services:
     volumes:
     - ./config:/etc/bind
     - ./cache:/varcache/bind
-    - ./records:/var/lib/bind
     restart: unless-stopped
+  # secondary_dns:
+  #   image: ubuntu/bind9
+  #   environment:
+  #     - BIND9_USER=root
+  #     - TZ=UTC
+  #   networks:
+  #     okm_ntw:
+  #       ipv4_address: 172.24.0.3
+  #   ports:
+  #   - "53:53/tcp"
+  #   - "53:53/udp"
+  #   volumes:
+  #   - ./s_config:/etc/bind
+  #   - ./s_cache:/varcache/bind
+  #   restart: unless-stopped
 
 networks:
   okm_ntw:
