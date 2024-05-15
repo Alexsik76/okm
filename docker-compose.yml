@@ -1,19 +1,30 @@
 services:
   cont1:
+    container_name: ubuntu1
+    hostname: ubuntu1
     tty: true
     build: .
     networks:
       okm_ntw:
         ipv4_address: 172.24.0.10
     dns: 172.24.0.2
+    dns_search: ns1.lab.demo
+    dns_opt:
+     - no-aaaa
   cont2:
+    container_name: ubuntu2
+    hostname: ubuntu2
     tty: true
     build: .
     networks:
       okm_ntw:
         ipv4_address: 172.24.0.11
-    dns: 172.24.0.2
+    dns: 172.24.0.3
+    dns_opt:
+     - no-aaaa
   web:
+    container_name: web
+    hostname: web
     image: nginx
     volumes:
     - ./html:/usr/share/nginx/html:ro
@@ -30,28 +41,22 @@ services:
     networks:
       okm_ntw:
         ipv4_address: 172.24.0.2
-    ports:
-    - "53:53/tcp"
-    - "53:53/udp"
     volumes:
-    - ./config:/etc/bind
-    - ./cache:/varcache/bind
+    - ./config_primary:/etc/bind
+    - ./cache_primary:/varcache/bind
     restart: unless-stopped
-  # secondary_dns:
-  #   image: ubuntu/bind9
-  #   environment:
-  #     - BIND9_USER=root
-  #     - TZ=UTC
-  #   networks:
-  #     okm_ntw:
-  #       ipv4_address: 172.24.0.3
-  #   ports:
-  #   - "53:53/tcp"
-  #   - "53:53/udp"
-  #   volumes:
-  #   - ./s_config:/etc/bind
-  #   - ./s_cache:/varcache/bind
-  #   restart: unless-stopped
+  secondary_dns:
+    image: ubuntu/bind9
+    environment:
+      - BIND9_USER=root
+      - TZ=UTC
+    networks:
+      okm_ntw:
+        ipv4_address: 172.24.0.3
+    volumes:
+    - ./config_secondary:/etc/bind
+    - ./cache_secondary:/varcache/bind
+    restart: unless-stopped
 
 networks:
   okm_ntw:
