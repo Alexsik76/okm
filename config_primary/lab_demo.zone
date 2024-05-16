@@ -1,6 +1,6 @@
 $TTL 1d
-$ORIGIN lab.demo. ;
-@               IN      SOA     ns1.lab.demo. hostmaster.lab.demo. (
+$ORIGIN lab.demo.
+@               IN      SOA     ns.lab.demo. hostmaster.lab.demo. (
                                 2023122800
                                 12h
                                 15m
@@ -8,9 +8,10 @@ $ORIGIN lab.demo. ;
                                 2h
                                 )
 
-                IN      NS      ns1.lab.demo.
+                IN      NS      ns.lab.demo.
 
-ns1             IN      A       172.24.0.2
+ns              IN      A       172.24.0.2
+
 
 ubuntu1         IN      A       172.24.0.10
 client1         IN      CNAME   ubuntu1.lab.demo.
