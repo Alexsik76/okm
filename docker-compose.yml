@@ -11,7 +11,6 @@ services:
     dns_search: .lab.demo
     dns_opt:
      - "no-aaaa"
-     - "search=lab.demo"
   cont2:
     container_name: ubuntu2
     hostname: ubuntu2
@@ -24,7 +23,6 @@ services:
     dns_search: .lab.demo
     dns_opt:
      - "no-aaaa"
-     - "search=lab.demo"
   web:
     container_name: web
     hostname: web
