@@ -1,0 +1,15 @@
+$TTL 2d  ; 172800 seconds
+$ORIGIN 0.24.172.IN-ADDR.ARPA.
+@     IN      SOA   ns.lab.demo.        hostmaster.lab.demo. (
+                                        2023080800 ; serial number
+                                        3h         ; refresh
+                                        15m        ; update retry
+                                        3w         ; expiry
+                                        3h         ; nx = nxdomain ttl
+                                        )
+; only one NS is required for this local file
+; and is an out of zone name
+      IN      NS      ns.lab.demo.
+; other IP addresses can be added as required
+
+2     IN      PTR      ns.lab.demo. ; fully qualified domain name (FQDN)
