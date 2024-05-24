@@ -6,11 +6,14 @@ services:
     build: .
     networks:
       okm_ntw:
-        ipv4_address: 172.24.0.10
-    dns: 172.24.0.2
-    dns_search: .lab.demo
+        mac_address: 02:42:ac:18:00:10
+    # dns: 172.24.2.2
+    dns_search: lab.demo
     dns_opt:
      - "no-aaaa"
+    depends_on:
+      - secondary_dns
+    
   cont2:
     container_name: ubuntu2
     hostname: ubuntu2
@@ -18,11 +21,13 @@ services:
     build: .
     networks:
       okm_ntw:
-        ipv4_address: 172.24.0.11
-    dns: 172.24.0.3
-    dns_search: .lab.demo
+        mac_address: 02:42:ac:18:00:11
+    dns: 172.24.2.3
+    dns_search: lab.demo
     dns_opt:
      - "no-aaaa"
+    depends_on:
+      - secondary_dns
   web:
     container_name: web
     hostname: web
@@ -31,10 +36,13 @@ services:
     - ./html:/usr/share/nginx/html:ro
     networks:
       okm_ntw:
-        ipv4_address: 172.24.0.20
+        mac_address: 02:42:ac:18:00:20
     ports:
     - "80:80"
+    depends_on:
+      - secondary_dns
   primary_dns:
+    container_name: primary_dns
     image: ubuntu/bind9
     hostname: primary_dns
     environment:
@@ -42,30 +50,36 @@ services:
       - TZ=Europe/Kiev
     networks:
       okm_ntw:
-        ipv4_address: 172.24.0.2
+        mac_address: 02:42:ac:18:00:02
     volumes:
     - ./config_primary:/etc/bind
     - ./cache_primary:/varcache/bind
     restart: unless-stopped
   secondary_dns:
+    container_name: secondary_dns
     image: ubuntu/bind9
     environment:
       - BIND9_USER=root
       - TZ=Europe/Kiev
     networks:
       okm_ntw:
-        ipv4_address: 172.24.0.3
+        mac_address: 02:42:ac:18:00:03
     volumes:
     - ./config_secondary:/etc/bind
     - ./cache_secondary:/varcache/bind
     restart: unless-stopped
-
+    depends_on:
+      - primary_dns
 networks:
   okm_ntw:
-    driver: bridge
-    ipam:
-      driver: default
-      config:
-        - subnet: 172.24.0.0/16
-          gateway: 172.24.0.1
-        
+    name: my-network
+    external: true
+    
+    
+    # driver: bridge
+    # ipam:
+    #   driver: default
+    #   config:
+    #     - subnet: 172.24.0.0/16
+    #       ip_range: 172.24.0.0/24
+    #       gateway: 172.24.0.1
