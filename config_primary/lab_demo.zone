@@ -17,4 +17,4 @@ ubuntu1         IN      A       172.24.0.10
 client1         IN      CNAME   ubuntu1.lab.demo.
 ubuntu2         IN      A       172.24.0.11
 client2         IN      CNAME   ubuntu2.lab.demo.
-web3            IN      A       172.24.0.20
+web1            IN      A       172.24.0.21

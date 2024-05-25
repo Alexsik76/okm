@@ -1,0 +1,34 @@
+html,
+body {
+    height: 100%;
+}
+.wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: auto;
+}
+.main {
+    text-align: center;
+    height: 40em;
+    width: 75%;
+    border: 3px solid BurlyWood;
+}
+.button {
+    padding: 1px 6px;
+    border: 1px outset Chocolate;
+    border-radius: 3px;
+    color: ForestGreen;
+    background-color: BlanchedAlmond;
+    text-decoration: none;
+}
+.logs {
+    padding-top: 5em;
+}
+#logs {
+    display: block;
+    white-space: pre-wrap;
+    overflow-y: auto;
+    max-height: 10em;
+}
